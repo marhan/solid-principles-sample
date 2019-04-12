@@ -1,4 +1,4 @@
-package de.marhan.sample.solid.adapter.rest;
+package de.marhan.sample.solid.adapter.rest.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
