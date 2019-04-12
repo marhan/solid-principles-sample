@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController("well")
 @Api(value = "Well designed functionality")
 public class WellDesignedController {
 
@@ -32,7 +32,7 @@ public class WellDesignedController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successfully retrieved the list of apartments")
 	})
-	@GetMapping(path = "well/apartments", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "apartments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<WellApartmentResource>> retrieveAll() {
 		List<WellApartment> apartmentList = apartmentService.findAll();
 		List<WellApartmentResource> apartmentResourceList = apartmentResourceMapper.mapApartmentsToResources(apartmentList);

@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController()
+@RestController("poorly")
 @Api(value = "Poorly designed functionality")
 public class PoorlyDesignedController {
 
@@ -33,18 +33,18 @@ public class PoorlyDesignedController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successfully retrieved the list of apartments")
 	})
-	@GetMapping(path = "poorly/apartments", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "apartments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PoorlyApartmentResource>> retrieveAll() {
 		List<PoorlyApartment> apartmentList = apartmentService.findAll();
 		List<PoorlyApartmentResource> apartmentResourceList = mapApartmentsToResources(apartmentList);
 		return new ResponseEntity<>(apartmentResourceList, HttpStatus.OK);
 	}
 
-	List<PoorlyApartmentResource> mapApartmentsToResources(List<PoorlyApartment> apartmentList) {
+	private List<PoorlyApartmentResource> mapApartmentsToResources(List<PoorlyApartment> apartmentList) {
 		return apartmentList.stream().map(this::mapApartmentToResource).collect(Collectors.toList());
 	}
 
-	PoorlyApartmentResource mapApartmentToResource(PoorlyApartment apartment) {
+	private PoorlyApartmentResource mapApartmentToResource(PoorlyApartment apartment) {
 		PoorlyApartmentResource apartmentResource = new PoorlyApartmentResource();
 		apartmentResource.setApartmentId(apartment.getApartmentId());
 		apartmentResource.setCity(apartment.getCity());

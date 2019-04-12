@@ -15,7 +15,7 @@ public class WellApartmentResourceMapper {
 		return apartmentList.stream().map(this::mapApartmentToResource).collect(Collectors.toList());
 	}
 
-	WellApartmentResource mapApartmentToResource(WellApartment apartment) {
+	private WellApartmentResource mapApartmentToResource(WellApartment apartment) {
 		WellApartmentResource apartmentResource = new WellApartmentResource();
 		apartmentResource.setApartmentId(apartment.getApartmentId());
 		apartmentResource.setCity(apartment.getCity());
