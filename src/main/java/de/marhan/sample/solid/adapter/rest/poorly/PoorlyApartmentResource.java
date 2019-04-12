@@ -1,4 +1,4 @@
-package de.marhan.sample.solid.adapter.rest.poor;
+package de.marhan.sample.solid.adapter.rest.poorly;
 
 import java.io.Serializable;
 import java.util.UUID;

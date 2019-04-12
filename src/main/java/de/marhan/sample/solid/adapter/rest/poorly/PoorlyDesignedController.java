@@ -1,4 +1,4 @@
-package de.marhan.sample.solid.adapter.rest.poor;
+package de.marhan.sample.solid.adapter.rest.poorly;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("poorly")
+@RestController
 @Api(value = "Poorly designed functionality")
 public class PoorlyDesignedController {
 
@@ -33,7 +33,7 @@ public class PoorlyDesignedController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successfully retrieved the list of apartments")
 	})
-	@GetMapping(path = "apartments", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "poorly/apartments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PoorlyApartmentResource>> retrieveAll() {
 		List<PoorlyApartment> apartmentList = apartmentService.findAll();
 		List<PoorlyApartmentResource> apartmentResourceList = mapApartmentsToResources(apartmentList);

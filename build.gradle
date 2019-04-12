@@ -35,9 +35,15 @@ dependencies {
 
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 
-	// lombock
+	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// JUnit
+	testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
+	testCompile('org.junit.jupiter:junit-jupiter-params:5.2.0')
+	testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+	testCompile('io.rest-assured:rest-assured:3.3.0')
+
 }
