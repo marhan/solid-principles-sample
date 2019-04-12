@@ -1,5 +1,5 @@
 package de.marhan.sample.solid.domain.well;
 
-public enum ApartmentStatus {
+public enum WellApartmentStatus {
 	free, reserved, rented
 }

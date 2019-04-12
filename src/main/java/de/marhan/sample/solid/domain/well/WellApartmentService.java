@@ -7,48 +7,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ApartmentService {
+public class WellApartmentService {
 
-    private final ApartmentRepository apartmentRepository;
+    private final WellApartmentRepository apartmentRepository;
 
     @Autowired
-    public ApartmentService(ApartmentRepository apartmentRepository) {
+    public WellApartmentService(WellApartmentRepository apartmentRepository) {
         this.apartmentRepository = apartmentRepository;
     }
 
-    public List<Apartment> retrieveApartments() {
+    public List<WellApartment> retrieveApartments() {
         return apartmentRepository.findAll();
     }
 
     public void reserveApartment(UUID apartmentId) {
-        Apartment apartment = apartmentRepository.findByApartmentId(apartmentId);
+        WellApartment apartment = apartmentRepository.findByApartmentId(apartmentId);
         apartment.reserve();
         apartmentRepository.save(apartment);
     }
 
 
     public void rentApartment(UUID apartmentId) {
-        Apartment apartment = apartmentRepository.findByApartmentId(apartmentId);
+        WellApartment apartment = apartmentRepository.findByApartmentId(apartmentId);
         apartment.rent();
         apartmentRepository.save(apartment);
     }
 
     public void cancelApartment(UUID apartmentId) {
-        Apartment apartment = apartmentRepository.findByApartmentId(apartmentId);
+        WellApartment apartment = apartmentRepository.findByApartmentId(apartmentId);
         apartment.cancel();
         apartmentRepository.save(apartment);
     }
 
-    public List<Apartment> findAll() {
+    public List<WellApartment> findAll() {
         return apartmentRepository.findAll();
     }
 
-    public Apartment findByApartmentId(UUID apartmentId) {
+    public WellApartment findByApartmentId(UUID apartmentId) {
         return apartmentRepository.findByApartmentId(apartmentId);
     }
 
-    public Apartment update(UUID apartmentId, String street, String city) {
-        Apartment apartment = apartmentRepository.findByApartmentId(apartmentId);
+    public WellApartment update(UUID apartmentId, String street, String city) {
+        WellApartment apartment = apartmentRepository.findByApartmentId(apartmentId);
         apartment.setStreet(street);
         apartment.setCity(city);
         return apartmentRepository.save(apartment);

@@ -14,7 +14,7 @@ import lombok.Data;
 @Entity
 @Table(name = "apartment")
 @Data
-public class Apartment {
+public class WellApartment {
 
     @Id
     @GeneratedValue
@@ -31,17 +31,17 @@ public class Apartment {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private ApartmentStatus status;
+    private WellApartmentStatus status;
 
     public void reserve() {
-        setStatus(ApartmentStatus.reserved);
+        setStatus(WellApartmentStatus.reserved);
     }
 
     public void rent() {
-        setStatus(ApartmentStatus.rented);
+        setStatus(WellApartmentStatus.rented);
     }
 
     public void cancel() {
-        setStatus(ApartmentStatus.free);
+        setStatus(WellApartmentStatus.free);
     }
 }

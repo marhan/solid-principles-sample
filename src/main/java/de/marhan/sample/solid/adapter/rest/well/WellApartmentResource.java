@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(description = "All details about the apartment. ")
-class ApartmentResource implements Serializable {
+class WellApartmentResource implements Serializable {
 
     public enum Status {
         free, reserved, rented
