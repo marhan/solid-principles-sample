@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.1.4.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'java'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -10,40 +10,47 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
+ext.springBootVersion = '2.1.4.RELEASE'
+ext.springfoxSwaggerVersion = '2.9.2'
+ext.lombokVersion = '1.18.4'
+ext.junitVersion = '5.4.2'
+ext.lombokVersion = '1.18.6'
+
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-	implementation("org.springframework.boot:spring-boot-starter-data-rest:${springBootVersion}")
-	implementation("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-data-rest:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
-	// swagger
-	implementation("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
-	implementation("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
+    // swagger
+    implementation("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
+    implementation("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
 
-	// database
-	implementation 'org.liquibase:liquibase-core'
-	runtimeOnly 'com.h2database:h2'
+    // database
+    implementation 'org.liquibase:liquibase-core:3.6.3'
+    runtimeOnly 'com.h2database:h2:1.4.199'
 
-	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
 
-	// lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    // lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	// JUnit
-	testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
-	testCompile('org.junit.jupiter:junit-jupiter-params:5.2.0')
-	testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
-	testCompile('io.rest-assured:rest-assured:3.3.0')
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testCompile("io.rest-assured:rest-assured:3.3.0")
+    // JUnit
+    testImplementation('org.junit.platform:junit-platform-commons:1.4.2')
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testCompile("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
 }
