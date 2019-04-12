@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: solid-sample
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    de.marhan.sample.solid: DEBUG
+
+server:
+  port: 9091
+
+
