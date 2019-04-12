@@ -15,7 +15,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AdapterRetrieveTest {
+class RetrieveApartmentsTest {
 
 	@LocalServerPort
 	int serverPort;
@@ -30,7 +30,7 @@ class AdapterRetrieveTest {
 				.baseUri(determineBaseUri());
 	}
 
-	@ParameterizedTest
+	@ParameterizedTest(name = "retrieve apartment by endpoint {arguments}]/apartments")
 	@ValueSource(strings = {"well", "poorly"})
 	void retrieve(String category) {
 		requestSpecification
