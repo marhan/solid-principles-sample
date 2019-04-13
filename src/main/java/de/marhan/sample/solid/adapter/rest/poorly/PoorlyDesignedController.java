@@ -1,6 +1,7 @@
 package de.marhan.sample.solid.adapter.rest.poorly;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import de.marhan.sample.solid.domain.poorly.PoorlyApartment;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,6 +40,18 @@ public class PoorlyDesignedController {
 		List<PoorlyApartment> apartmentList = apartmentService.findAll();
 		List<PoorlyApartmentResource> apartmentResourceList = mapApartmentsToResources(apartmentList);
 		return new ResponseEntity<>(apartmentResourceList, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "Retrieve the specified apartment")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully retrieved the apartment"),
+			@ApiResponse(code = 404, message = "The specified apartment was not found")
+	})
+	@GetMapping(path = "poorly/apartments/{apartmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PoorlyApartmentResource> retrieve(@PathVariable(name = "apartmentId") UUID apartmentId) {
+		PoorlyApartment apartment = apartmentService.findByApartmentId(apartmentId);
+		PoorlyApartmentResource apartmentResource = mapApartmentToResource(apartment);
+		return new ResponseEntity<>(apartmentResource, HttpStatus.OK);
 	}
 
 	private List<PoorlyApartmentResource> mapApartmentsToResources(List<PoorlyApartment> apartmentList) {

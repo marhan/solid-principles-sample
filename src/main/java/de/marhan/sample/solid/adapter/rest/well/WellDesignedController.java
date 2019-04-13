@@ -1,6 +1,7 @@
 package de.marhan.sample.solid.adapter.rest.well;
 
 import java.util.List;
+import java.util.UUID;
 
 import de.marhan.sample.solid.domain.well.WellApartment;
 import de.marhan.sample.solid.domain.well.WellApartmentService;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,15 +30,27 @@ public class WellDesignedController {
 		this.apartmentResourceMapper = apartmentResourceMapper;
 	}
 
-	@ApiOperation(value = "Retrieve a list of apartments")
+	@ApiOperation(value = "Retrieve all apartments")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Successfully retrieved the list of apartments")
+			@ApiResponse(code = 200, message = "Successfully retrieved all apartments")
 	})
 	@GetMapping(path = "well/apartments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<WellApartmentResource>> retrieveAll() {
 		List<WellApartment> apartmentList = apartmentService.findAll();
 		List<WellApartmentResource> apartmentResourceList = apartmentResourceMapper.mapApartmentsToResources(apartmentList);
 		return new ResponseEntity<>(apartmentResourceList, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "Retrieve the specified apartment")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully retrieved the apartment"),
+			@ApiResponse(code = 404, message = "The specified apartment was not found")
+	})
+	@GetMapping(path = "well/apartments/{apartmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<WellApartmentResource> retrieve(@PathVariable(name = "apartmentId") UUID apartmentId) {
+		WellApartment apartment = apartmentService.findByApartmentId(apartmentId);
+		WellApartmentResource apartmentResource = apartmentResourceMapper.mapApartmentToResource(apartment);
+		return new ResponseEntity<>(apartmentResource, HttpStatus.OK);
 	}
 
 }

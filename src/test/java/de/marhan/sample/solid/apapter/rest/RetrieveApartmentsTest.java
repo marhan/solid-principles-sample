@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
@@ -30,9 +31,9 @@ class RetrieveApartmentsTest {
 				.baseUri(determineBaseUri());
 	}
 
-	@ParameterizedTest(name = "retrieve apartment by endpoint {arguments}]/apartments")
+	@ParameterizedTest(name = "retrieve all apartments with endpoint {arguments}/apartments")
 	@ValueSource(strings = {"well", "poorly"})
-	void retrieve(String category) {
+	void retrieveAll(String category) {
 		requestSpecification
 				.baseUri(determineBaseUri())
 				.pathParam("category", category)
@@ -47,6 +48,23 @@ class RetrieveApartmentsTest {
 				.body("findAll { it.apartmentId == '6226560e-2e9a-4dad-8854-f996ed47e250'}.city", hasItems("Berlin"))
 				.body("findAll { it.apartmentId == '6226560e-2e9a-4dad-8854-f996ed47e250'}.street", hasItems("Westarpstraße 3"))
 				.body("findAll { it.apartmentId == '6226560e-2e9a-4dad-8854-f996ed47e250'}.status", hasItems("free"));
+	}
+
+	@ParameterizedTest(name = "retrieve one apartment with endpoint {arguments}/apartments")
+	@ValueSource(strings = {"well", "poorly"})
+	void retrieveByApartmentId(String category) {
+		requestSpecification
+				.baseUri(determineBaseUri())
+				.pathParam("category", category)
+				.pathParam("apartmentId", "a81b0db2-7114-4f35-8776-751acb3730ca")
+				.when()
+				.get("/{category}/apartments/{apartmentId}")
+				.then().log().all()
+				.statusCode(200)
+				.body("apartmentId", equalTo("a81b0db2-7114-4f35-8776-751acb3730ca"))
+				.body("city", equalTo("Hamburg"))
+				.body("street", equalTo("Helmholtzstraße 2"))
+				.body("status", equalTo("free"));
 	}
 
 	private String determineBaseUri() {
