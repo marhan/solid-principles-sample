@@ -3,7 +3,6 @@ package de.marhan.sample.solid.apapter.rest.poor;
 import de.marhan.sample.solid.apapter.rest.RestAssuredHelper;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,10 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RetrievePoorApartmentsTest {
+class RetrievePoorApartmentsSuccessTest {
+
+	private static final int ENTITY_ID_1 = 1;
+	private static final int ENTITY_ID_2 = 2;
 
 	@LocalServerPort
 	int serverPort;
@@ -30,31 +32,29 @@ class RetrievePoorApartmentsTest {
 
 
 	@Test
-	@DisplayName("retrieve all apartments with endpoint poor/apartments")
-	void retrieveAllPoorApartments() {
+	void whenRetrieveAllPoorApartmentsThenFound() {
 		given.when()
 				.get("/poor/apartments")
 				.then().log().all()
 				.statusCode(200)
 				.body("$", hasSize(2))
-				.body("findAll { it.id == 1}.city", hasItems("Frankfurt am Main"))
-				.body("findAll { it.id == 1}.street", hasItems("Breitenbachstraße 3"))
-				.body("findAll { it.id == 1}.status", hasItems("free"))
-				.body("findAll { it.id == 2}.city", hasItems("Bremen"))
-				.body("findAll { it.id == 2}.street", hasItems("Havemannstraße 3"))
-				.body("findAll { it.id == 2}.status", hasItems("rented"));
+				.body("findAll { it.id == " + ENTITY_ID_1 + "}.city", hasItems("Frankfurt am Main"))
+				.body("findAll { it.id == " + ENTITY_ID_1 + "}.street", hasItems("Breitenbachstraße 3"))
+				.body("findAll { it.id == " + ENTITY_ID_1 + "}.status", hasItems("free"))
+				.body("findAll { it.id == " + ENTITY_ID_2 + "}.city", hasItems("Bremen"))
+				.body("findAll { it.id == " + ENTITY_ID_2 + "}.street", hasItems("Havemannstraße 3"))
+				.body("findAll { it.id == " + ENTITY_ID_2 + "}.status", hasItems("rented"));
 	}
 
 
 	@Test
-	@DisplayName("retrieve specific apartment with endpoint /poor/apartments")
-	void retrievePoorApartmentByApartmentId() {
-		given.pathParam("id", 1)
+	void whenRetrievePoorApartmentByApartmentIdThenFound() {
+		given.pathParam("id", ENTITY_ID_1)
 				.when()
 				.get("/poor/apartments/{id}")
 				.then().log().all()
 				.statusCode(200)
-				.body("id", equalTo(1))
+				.body("id", equalTo(ENTITY_ID_1))
 				.body("city", equalTo("Frankfurt am Main"))
 				.body("street", equalTo("Breitenbachstraße 3"))
 				.body("status", equalTo("free"));

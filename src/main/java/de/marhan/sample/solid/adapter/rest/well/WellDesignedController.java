@@ -44,6 +44,7 @@ public class WellDesignedController {
 	@ApiOperation(value = "Retrieve the specified apartment")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successfully retrieved the apartment"),
+			@ApiResponse(code = 400, message = "The path param is not a valid UUID"),
 			@ApiResponse(code = 404, message = "The specified apartment was not found")
 	})
 	@GetMapping(path = "well/apartments/{apartmentId}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,6 +1,7 @@
 package de.marhan.sample.solid.domain.poor;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,8 @@ public class PoorApartmentService {
 		return apartmentRepository.findAll();
 	}
 
-	public PoorApartment findByApartmentId(Integer id) {
-		return apartmentRepository.getOne(id);
+	public Optional<PoorApartment> findById(Integer id) {
+		return apartmentRepository.findById(id);
 	}
 
 	public PoorApartment update(Integer entityId, String street, String city) {

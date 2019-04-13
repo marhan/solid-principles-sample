@@ -48,9 +48,10 @@ public class PoorlyDesignedController {
 	})
 	@GetMapping(path = "poor/apartments/{entityId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PoorApartmentResource> retrieve(@PathVariable(name = "entityId") Integer entityId) {
-		PoorApartment apartment = apartmentService.findByApartmentId(entityId);
-		PoorApartmentResource apartmentResource = mapApartmentToResource(apartment);
-		return new ResponseEntity<>(apartmentResource, HttpStatus.OK);
+		return apartmentService.findById(entityId)
+				.map(this::mapApartmentToResource)
+				.map(resource -> new ResponseEntity<>(resource, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	private List<PoorApartmentResource> mapApartmentsToResources(List<PoorApartment> apartmentList) {
