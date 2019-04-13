@@ -1,6 +1,6 @@
-package de.marhan.sample.solid.apapter.rest;
+package de.marhan.sample.solid.apapter.rest.well;
 
-import io.restassured.RestAssured;
+import de.marhan.sample.solid.apapter.rest.RestAssuredHelper;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,27 +16,23 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RetrieveApartmentsTest {
+class RetrieveWellApartmentsTest {
 
 	@LocalServerPort
 	int serverPort;
 
-	private RequestSpecification requestSpecification;
+	private RequestSpecification given;
+
 
 	@BeforeEach
 	void setUp() {
-		requestSpecification = RestAssured
-				.given()
-				.log().all()
-				.baseUri(determineBaseUri());
+		given = new RestAssuredHelper(serverPort).given();
 	}
 
 	@Test
 	@DisplayName("retrieve all apartments with endpoint well/apartments")
 	void retrieveAllWellApartments() {
-		requestSpecification
-				.baseUri(determineBaseUri())
-				.when()
+		given.when()
 				.get("/well/apartments")
 				.then().log().all()
 				.statusCode(200)
@@ -49,30 +45,11 @@ class RetrieveApartmentsTest {
 				.body("findAll { it.apartmentId == '6226560e-2e9a-4dad-8854-f996ed47e250'}.status", hasItems("rented"));
 	}
 
-	@Test
-	@DisplayName("retrieve all apartments with endpoint poor/apartments")
-	void retrieveAllPoorApartments() {
-		requestSpecification
-				.baseUri(determineBaseUri())
-				.when()
-				.get("/poor/apartments")
-				.then().log().all()
-				.statusCode(200)
-				.body("$", hasSize(2))
-				.body("findAll { it.id == 1}.city", hasItems("Frankfurt am Main"))
-				.body("findAll { it.id == 1}.street", hasItems("Breitenbachstraße 3"))
-				.body("findAll { it.id == 1}.status", hasItems("free"))
-				.body("findAll { it.id == 2}.city", hasItems("Bremen"))
-				.body("findAll { it.id == 2}.street", hasItems("Havemannstraße 3"))
-				.body("findAll { it.id == 2}.status", hasItems("rented"));
-	}
 
 	@Test
 	@DisplayName("retrieve specific apartment with endpoint well/apartments")
 	void retrieveWellApartmentByApartmentId() {
-		requestSpecification
-				.baseUri(determineBaseUri())
-				.pathParam("apartmentId", "a81b0db2-7114-4f35-8776-751acb3730ca")
+		given.pathParam("apartmentId", "a81b0db2-7114-4f35-8776-751acb3730ca")
 				.when()
 				.get("/well/apartments/{apartmentId}")
 				.then().log().all()
@@ -83,23 +60,4 @@ class RetrieveApartmentsTest {
 				.body("status", equalTo("free"));
 	}
 
-	@Test
-	@DisplayName("retrieve specific apartment with endpoint /poor/apartments")
-	void retrievePoorApartmentByApartmentId() {
-		requestSpecification
-				.baseUri(determineBaseUri())
-				.pathParam("id", 1)
-				.when()
-				.get("/poor/apartments/{id}")
-				.then().log().all()
-				.statusCode(200)
-				.body("id", equalTo(1))
-				.body("city", equalTo("Frankfurt am Main"))
-				.body("street", equalTo("Breitenbachstraße 3"))
-				.body("status", equalTo("free"));
-	}
-
-	private String determineBaseUri() {
-		return "http://localhost:" + serverPort;
-	}
 }
