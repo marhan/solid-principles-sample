@@ -1,6 +1,5 @@
-package de.marhan.sample.solid.domain.poorly;
+package de.marhan.sample.solid.domain.poor;
 
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,16 +11,13 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "apartment")
+@Table(name = "poor_apartment")
 @Data
-public class PoorlyApartment {
+public class PoorApartment {
 
     @Id
     @GeneratedValue
     private Integer id;
-
-    @Column(name = "apartmentId")
-    private UUID apartmentId;
 
     @Column(name = "city")
     private String city;
@@ -31,17 +27,17 @@ public class PoorlyApartment {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private PoorlyApartmentStatus status;
+    private PoorApartmentStatus status;
 
     public void reserve() {
-        setStatus(PoorlyApartmentStatus.reserved);
+        setStatus(PoorApartmentStatus.reserved);
     }
 
     public void rent() {
-        setStatus(PoorlyApartmentStatus.rented);
+        setStatus(PoorApartmentStatus.rented);
     }
 
     public void cancel() {
-        setStatus(PoorlyApartmentStatus.free);
+        setStatus(PoorApartmentStatus.free);
     }
 }

@@ -34,6 +34,31 @@ databaseChangeLog:
                   type: varchar(50)
                   constraints:
                     nullable: false
+        - createTable:
+            tableName: poor_apartment
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
   - changeSet:
       id: 2
       author: marhan
@@ -67,4 +92,32 @@ databaseChangeLog:
                   value: Westarpstraße 3
               - column:
                   name: status
+                  value: rented
+  - changeSet:
+      id: 3
+      author: marhan
+      changes:
+        - insert:
+            tableName: poor_apartment
+            columns:
+              - column:
+                  name: city
+                  value: Frankfurt am Main
+              - column:
+                  name: street
+                  value: Breitenbachstraße 3
+              - column:
+                  name: status
                   value: free
+        - insert:
+            tableName: poor_apartment
+            columns:
+              - column:
+                  name: city
+                  value: Bremen
+              - column:
+                  name: street
+                  value: Havemannstraße 3
+              - column:
+                  name: status
+                  value: rented
