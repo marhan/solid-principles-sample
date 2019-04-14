@@ -3,6 +3,7 @@ package de.marhan.sample.solid.domain.poor;
 import java.util.List;
 import java.util.Optional;
 
+import de.marhan.sample.solid.adapter.message.poor.PoorKafkaMessageProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,32 +12,13 @@ public class PoorApartmentService {
 
 	private final PoorApartmentRepository apartmentRepository;
 
+	/* Violation of DIP */
+	private final PoorKafkaMessageProducer messageProducer;
+
 	@Autowired
-	public PoorApartmentService(PoorApartmentRepository apartmentRepository) {
+	public PoorApartmentService(PoorApartmentRepository apartmentRepository, PoorKafkaMessageProducer messageProducer) {
 		this.apartmentRepository = apartmentRepository;
-	}
-
-	public List<PoorApartment> retrieveApartments() {
-		return apartmentRepository.findAll();
-	}
-
-	public void reserveApartment(Integer entityId) {
-		PoorApartment apartment = apartmentRepository.getOne(entityId);
-		apartment.reserve();
-		apartmentRepository.save(apartment);
-	}
-
-
-	public void rentApartment(Integer entityId) {
-		PoorApartment apartment = apartmentRepository.getOne(entityId);
-		apartment.rent();
-		apartmentRepository.save(apartment);
-	}
-
-	public void cancelApartment(Integer entityId) {
-		PoorApartment apartment = apartmentRepository.getOne(entityId);
-		apartment.cancel();
-		apartmentRepository.save(apartment);
+		this.messageProducer = messageProducer;
 	}
 
 	public List<PoorApartment> findAll() {
@@ -48,9 +30,18 @@ public class PoorApartmentService {
 	}
 
 	public PoorApartment update(Integer entityId, String street, String city) {
-		PoorApartment apartment = apartmentRepository.getOne(entityId);
-		apartment.setStreet(street);
-		apartment.setCity(city);
-		return apartmentRepository.save(apartment);
+
+		Optional<PoorApartment> apartmentOptional = apartmentRepository.findById(entityId);
+
+		if (apartmentOptional.isPresent()) {
+			PoorApartment apartment = apartmentOptional.get();
+			apartment.setStreet(street);
+			apartment.setCity(city);
+			apartmentRepository.save(apartment);
+			messageProducer.sendUpdateEvent(apartment);
+			return apartment;
+		}
+
+		return null;
 	}
 }

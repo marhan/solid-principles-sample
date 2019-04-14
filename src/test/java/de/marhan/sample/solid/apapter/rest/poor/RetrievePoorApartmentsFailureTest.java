@@ -36,6 +36,7 @@ class RetrievePoorApartmentsFailureTest {
 				.statusCode(404);
 	}
 
+	/* Exception handling */
 	@Test
 	void whenTryToRetrieveApartmentByInvalidApartmentIdThenBadRequest() {
 		given.pathParam("id", INVALID_ENTITY_ID)

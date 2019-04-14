@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import de.marhan.sample.solid.domain.poor.PoorApartment;
 import de.marhan.sample.solid.domain.poor.PoorApartmentService;
-import de.marhan.sample.solid.domain.poor.PoorApartmentStatus;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -20,12 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Api(value = "Poor designed functionality")
-public class PoorlyDesignedController {
+public class PoorDesignedController {
 
 	private final PoorApartmentService apartmentService;
+	private PoorApartmentStatusMapper poorApartmentStatusMapper;
 
 	@Autowired
-	public PoorlyDesignedController(PoorApartmentService apartmentService) {
+	public PoorDesignedController(PoorApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
 
@@ -54,32 +54,31 @@ public class PoorlyDesignedController {
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
+	/* Violation of SRP */
 	private List<PoorApartmentResource> mapApartmentsToResources(List<PoorApartment> apartmentList) {
 		return apartmentList.stream().map(this::mapApartmentToResource).collect(Collectors.toList());
 	}
 
+	/* Violation of SRP */
 	private PoorApartmentResource mapApartmentToResource(PoorApartment apartment) {
 		PoorApartmentResource apartmentResource = new PoorApartmentResource();
 		apartmentResource.setCity(apartment.getCity());
 		apartmentResource.setStreet(apartment.getStreet());
-		apartmentResource.setStatus(mapToResourceStatus(apartment.getStatus()));
+		apartmentResource.setStatus(getStatusMapper().mapToResourceStatus(apartment.getStatus()));
 		apartmentResource.setId(apartment.getId());
 		return apartmentResource;
 	}
 
-	private PoorApartmentResource.Status mapToResourceStatus(PoorApartmentStatus apartmentStatus) {
-		PoorApartmentResource.Status resourceStatus = null;
-		switch (apartmentStatus) {
-			case free:
-				resourceStatus = PoorApartmentResource.Status.free;
-				break;
-			case reserved:
-				resourceStatus = PoorApartmentResource.Status.reserved;
-				break;
-			case rented:
-				resourceStatus = PoorApartmentResource.Status.rented;
-				break;
+	/*
+	 * Lazy initialization.
+	 *
+	 * Violation of SoC
+	 */
+	private PoorApartmentStatusMapper getStatusMapper() {
+		if (poorApartmentStatusMapper == null) {
+			poorApartmentStatusMapper = new PoorApartmentStatusMapper();
 		}
-		return resourceStatus;
+		return poorApartmentStatusMapper;
 	}
+
 }

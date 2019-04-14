@@ -14,3 +14,8 @@ WORK IN PROGRESS!
     JDBC URL: jdbc:h2:mem:testdb
     User Name: sa
     Password: <leave blank>
+    
+# Legend for principles
+
+* SRP - Single Responsibility Principle
+* DIP - Dependency Inversion Principle

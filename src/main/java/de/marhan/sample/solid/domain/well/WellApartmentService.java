@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 public class WellApartmentService {
 
 	private final WellApartmentRepository apartmentRepository;
+	private final WellDomainEventMessageProducer messageProducer;
 
 	@Autowired
-	public WellApartmentService(WellApartmentRepository apartmentRepository) {
+	public WellApartmentService(WellApartmentRepository apartmentRepository, WellDomainEventMessageProducer messageProducer) {
 		this.apartmentRepository = apartmentRepository;
+		this.messageProducer = messageProducer;
 	}
 
 	public List<WellApartment> findAll() {
@@ -30,7 +32,12 @@ public class WellApartmentService {
 
 		apartment.setStreet(street);
 		apartment.setCity(city);
-		return apartmentRepository.save(apartment);
+
+		WellApartment savedApartment = apartmentRepository.save(apartment);
+
+		messageProducer.sendUpdateEvent(savedApartment);
+
+		return savedApartment;
 	}
 
 	private WellApartmentNotFoundException createNotFoundException(UUID apartmentId) {
