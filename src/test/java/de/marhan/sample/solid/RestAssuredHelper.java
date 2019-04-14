@@ -1,4 +1,4 @@
-package de.marhan.sample.solid.apapter.rest;
+package de.marhan.sample.solid;
 
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;

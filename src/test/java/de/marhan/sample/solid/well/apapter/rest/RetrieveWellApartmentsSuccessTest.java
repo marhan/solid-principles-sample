@@ -1,6 +1,6 @@
-package de.marhan.sample.solid.apapter.rest.well;
+package de.marhan.sample.solid.well.apapter.rest;
 
-import de.marhan.sample.solid.apapter.rest.RestAssuredHelper;
+import de.marhan.sample.solid.RestAssuredHelper;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
